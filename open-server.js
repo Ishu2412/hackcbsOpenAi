@@ -1,11 +1,14 @@
-import express from "express";
-import axios from "axios";
-import bodyParser from "body-parser";
+const express = require("express");
+const axios = require("axios");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const API_KEY = "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  ";
+const API_KEY = process.env.API_KEY;
 const API_URL = "https://api.openai.com/v1/completions";
 
 // Define the route to handle chat interactions
@@ -41,7 +44,7 @@ app.post("/chat", async (req, res) => {
     const modifiedText = lines.join(" ");
     res.json({ modifiedText });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({
       error:
         "Oops! Something went wrong while retrieving the response. Please try again.",
